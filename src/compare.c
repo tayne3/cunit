@@ -4,6 +4,11 @@
 
 #include "cunit/assert.h"
 
+#ifdef _MSC_VER
+#define strcasecmp  _stricmp
+#define strncasecmp _strnicmp
+#endif
+
 #define CUNIT_STRCMP(l, r)        (l == r ? 0 : !l ? -1 : !r ? 1 : strcmp(l, r))
 #define CUNIT_STRCASECMP(l, r)    (l == r ? 0 : !l ? -1 : !r ? 1 : strcasecmp(l, r))
 #define CUNIT_STRNCMP(l, r, size) (l == r ? 0 : !l ? -1 : !r ? 1 : strncmp(l, r, size))
@@ -13,13 +18,9 @@
 #define CUNIT_FLOAT64_COMPARE(l, r) (isnan(l) ? isnan(r) ? 0 : -1 : isnan(r) ? 1 : (fabs(l - r) <= DBL_EPSILON) ? 0 : (l > r) - (l < r))
 
 static inline void __cunit_print_bool(bool b) { fputs(b ? "true" : "false", stdout); }
-
 static inline void __cunit_print_char(char c) { putchar(c); }
-
 static inline void __cunit_print_f32(float f) { printf("%f", f); }
-
 static inline void __cunit_print_f64(double f) { printf("%f", f); }
-
 static inline void __cunit_print_str(const char *str) { fputs(str ? str : "(null)", stdout); }
 
 static inline void __cunit_print_u64(uint64_t n) {
@@ -44,7 +45,7 @@ static inline void __cunit_print_i64(int64_t n) {
 		__cunit_print_u64((uint64_t)n);
 	} else {
 		putchar('-');
-		__cunit_print_u64(-(uint64_t)n);
+		__cunit_print_u64((uint64_t)-n);
 	}
 }
 
@@ -155,13 +156,6 @@ enum cunit_compare_result {
 			fputs(STR_NEWLINE, stdout);                                              \
 		}                                                                            \
 	} while (0)
-
-#define CUNIT_STRCMP(l, r)        (l == r ? 0 : !l ? -1 : !r ? 1 : strcmp(l, r))
-#define CUNIT_STRCASECMP(l, r)    (l == r ? 0 : !l ? -1 : !r ? 1 : strcasecmp(l, r))
-#define CUNIT_STRNCMP(l, r, size) (l == r ? 0 : !l ? -1 : !r ? 1 : strncmp(l, r, size))
-
-#define CUNIT_FLOAT32_COMPARE(l, r) (isnan(l) ? isnan(r) ? 0 : -1 : isnan(r) ? 1 : (fabsf(l - r) <= FLT_EPSILON) ? 0 : (l > r) - (l < r))
-#define CUNIT_FLOAT64_COMPARE(l, r) (isnan(l) ? isnan(r) ? 0 : -1 : isnan(r) ? 1 : (fabs(l - r) <= DBL_EPSILON) ? 0 : (l > r) - (l < r))
 
 static inline bool __cunit_check_any_is_in_array(const cunit_value_t value, const void *array, size_t size) {
 	switch (value.type) {
