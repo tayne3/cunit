@@ -1,3 +1,5 @@
+#include <setjmp.h>
+
 #include "cunit.h"
 #include "init.h"
 #include "once.h"
@@ -34,6 +36,7 @@ typedef struct {
 	bool               is_initialized;  // A flag indicating whether the registry has been initialized.
 	bool               test_running;    // A flag indicating whether a test is currently running.
 	bool               test_failed;     // A flag indicating whether the current test has failed.
+	jmp_buf            test_jmp_buf;    // Jump buffer for early test exit in COLLECT mode.
 } cunit_registry_t;
 
 // Initializes a cunit_registry_t struct with default values.
@@ -60,7 +63,17 @@ static void cunit__run_test(cunit_suite_t *suite, cunit_test_t *test) {
 
 	if (suite->setup) { suite->setup(); }
 
-	test->func();
+	// Use setjmp/longjmp for early exit in COLLECT mode
+	if (cunit__registry.error_mode == CUNIT_ERROR_MODE_COLLECT) {
+		if (setjmp(cunit__registry.test_jmp_buf) == 0) {
+			// First time through - run the test
+			test->func();
+		}
+		// If longjmp was called, we jump here and skip the rest of the test
+	} else {
+		// In FAIL_FAST mode, run normally (will exit on first failure)
+		test->func();
+	}
 
 	if (suite->teardown) { suite->teardown(); }
 
@@ -110,6 +123,9 @@ void cunit__handle_fail(const cunit_context_t ctx) {
 	if (cunit__registry.error_mode == CUNIT_ERROR_MODE_FAIL_FAST) {
 		printf("[ \033[31mFAILED\033[0m ] Stopping on first failure\n");
 		exit(EXIT_FAILURE);
+	} else if (cunit__registry.error_mode == CUNIT_ERROR_MODE_COLLECT) {
+		// In COLLECT mode, jump back to the test runner to skip the rest of the test
+		longjmp(cunit__registry.test_jmp_buf, 1);
 	}
 }
 
@@ -203,7 +219,7 @@ int cunit_run(void) {
 
 	cunit__print_final();
 
-	int failed_count = cunit__registry.total_failed;
+	const int failed_count = cunit__registry.total_failed;
 	cunit_cleanup();
 	return failed_count;
 }
