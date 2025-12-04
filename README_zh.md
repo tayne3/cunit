@@ -1,6 +1,6 @@
 # cunit
 
-![CMake](https://img.shields.io/badge/CMake-3.12%2B-brightgreen?logo=cmake&logoColor=white)
+![CMake](https://img.shields.io/badge/CMake-3.14%2B-brightgreen?logo=cmake&logoColor=white)
 [![Release](https://img.shields.io/github/v/release/tayne3/cunit?include_prereleases&label=release&logo=github&logoColor=white)](https://github.com/tayne3/cunit/releases)
 [![Tag](https://img.shields.io/github/v/tag/tayne3/cunit?color=%23ff8936&style=flat-square&logo=git&logoColor=white)](https://github.com/tayne3/cunit/tags)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/tayne3/cunit)
@@ -107,7 +107,7 @@ include(FetchContent)
 FetchContent_Declare(
     cunit
     GIT_REPOSITORY https://github.com/tayne3/cunit.git
-    GIT_TAG v0.2.0
+    GIT_TAG v0.2.3
 )
 FetchContent_MakeAvailable(cunit)
 
@@ -124,7 +124,7 @@ add_test(NAME my_tests COMMAND my_tests)
 
 ```cmake
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:tayne3/cunit@v0.2.0")
+CPMAddPackage("gh:tayne3/cunit@v0.2.3")
 
 add_executable(my_tests test_main.c)
 target_link_libraries(my_tests PRIVATE cunit::cunit)
