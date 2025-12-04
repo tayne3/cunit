@@ -25,7 +25,6 @@
 #define CUNIT_DEF_H
 
 #ifdef __cplusplus
-#include <ctime>
 #include <cfloat>
 #include <climits>
 #include <cmath>
@@ -35,6 +34,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #else
 #include <float.h>
 #include <limits.h>
@@ -51,6 +51,7 @@
 #if _WIN32
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0600
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 
