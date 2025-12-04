@@ -20,8 +20,11 @@ else()
 endif()
 add_library(cunit::cunit ALIAS ${CUNIT})
 
-file(GLOB_RECURSE project_source_files CONFIGURE_DEPENDS src/*.c)
-target_sources(${CUNIT} PUBLIC ${project_source_files})
+target_sources(${CUNIT} PRIVATE 
+  src/compare.c
+  src/init.c
+  src/suite.c
+)
 target_link_libraries(${CUNIT} PUBLIC ${PROJECT_NAME}_compile_dependency)
 target_include_directories(${CUNIT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
