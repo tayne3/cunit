@@ -352,10 +352,10 @@ _Pvt_Extensions
 
 # User Directory
 .discard/
-
-# CPM modules
 cmake_modules/
-
-# Doxyfile configure file
+cmake-build-*/
 Doxyfile
 ProjectInfo
+
+# Environment variables
+*.env
