@@ -16,5 +16,5 @@ option(CUNIT_BUILD_SHARED "build shared library" OFF)
 mark_as_advanced(CUNIT_BUILD_SHARED)
 
 if(PROJECT_IS_TOP_LEVEL)
-    option(CUNIT_BUILD_EXAMPLE "build example program" OFF)
+  option(CUNIT_BUILD_EXAMPLE "build example program" OFF)
 endif()
