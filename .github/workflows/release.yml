@@ -5,11 +5,11 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'The tag to create a release for (e.g., v1.0.0)'
+        description: "The tag to create a release for (e.g., v1.0.0)"
         required: true
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release:
@@ -17,29 +17,35 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Configure Git for flaky networks
-        run: |
-          git config --global http.postBuffer 524288000
-          git config --global http.lowSpeedLimit 0
-          git config --global http.lowSpeedTime 0
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Build Linux binary
+
+      - name: Configure CMake
+        run: >
+          cmake -S . -B build 
+          -G Ninja 
+          -DCMAKE_BUILD_TYPE=Release 
+          -DCUNIT_BUILD_SHARED=OFF 
+          -DCUNIT_BUILD_EXAMPLE=ON
+
+      - name: Build
         run: |
-          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCUNIT_BUILD_SHARED=OFF -DCUNIT_BUILD_EXAMPLE=ON
-          cmake --build build --parallel 8 --
+          cmake --build build --config Release
+
       - name: List files in the binary directory
         run: |
-          ls bin/release-linux
+          ls cmake-build-release/example
+
       - name: Run examples
         run: |
-          ./bin/release-linux/sample
-          ! ./bin/release-linux/expect_fail
+          ./cmake-build-release/example/sample
+          ! ./cmake-build-release/example/expect_fail
+
       - name: Publish Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag || github.ref_name }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
