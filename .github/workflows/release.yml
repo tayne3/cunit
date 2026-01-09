@@ -24,15 +24,15 @@ jobs:
 
       - name: Configure CMake
         run: >
-          cmake -S . -B build 
-          -G Ninja 
-          -DCMAKE_BUILD_TYPE=Release 
-          -DCUNIT_BUILD_SHARED=OFF 
+          cmake -S . -B cmake-build-release
+          -G Ninja
+          -DCMAKE_BUILD_TYPE=Release
+          -DCUNIT_BUILD_SHARED=OFF
           -DCUNIT_BUILD_EXAMPLE=ON
 
       - name: Build
         run: |
-          cmake --build build --config Release
+          cmake --build cmake-build-release --config Release
 
       - name: List files in the binary directory
         run: |
