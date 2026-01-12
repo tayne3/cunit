@@ -36,12 +36,12 @@ jobs:
 
       - name: List files in the binary directory
         run: |
-          ls cmake-build-release/example
+          ls cmake-build-release/bin
 
       - name: Run examples
         run: |
-          ./cmake-build-release/example/sample
-          ! ./cmake-build-release/example/expect_fail
+          ./cmake-build-release/bin/sample
+          ! ./cmake-build-release/bin/expect_fail
 
       - name: Publish Release
         uses: softprops/action-gh-release@v2
