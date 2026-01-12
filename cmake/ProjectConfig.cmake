@@ -22,6 +22,10 @@ else()
   set(CMAKE_INSTALL_RPATH "$ORIGIN;$ORIGIN/${CMAKE_INSTALL_LIBDIR}")
 endif()
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
 add_library(cunit_compile_dependency INTERFACE)
 target_compile_features(cunit_compile_dependency INTERFACE c_std_99)
 if(UNIX)
@@ -96,52 +100,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     target_compile_options(cunit_compile_dependency INTERFACE 
 		  "$<$<COMPILE_LANGUAGE:CXX>:/guard:cf>"
 	  )
-  endif()
-endif()
-
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-  check_c_compiler_flag("-fstack-protector-all" C_HAS_STACK_PROTECT_ALL)
-  if(C_HAS_STACK_PROTECT_ALL)
-    target_compile_options(cunit_compile_dependency INTERFACE 
-      "$<$<COMPILE_LANGUAGE:C>:-fstack-protector-all>"
-    )
-  else()
-    check_c_compiler_flag("-fstack-protector-strong" C_HAS_STACK_PROTECT_STRONG)
-    if(C_HAS_STACK_PROTECT_STRONG)
-      target_compile_options(cunit_compile_dependency INTERFACE 
-      "$<$<COMPILE_LANGUAGE:C>:-fstack-protector-strong>"
-      )
-    else()
-      check_c_compiler_flag("-fstack-protector" C_HAS_STACK_PROTECT)
-      if(C_HAS_STACK_PROTECT)
-        target_compile_options(cunit_compile_dependency INTERFACE 
-        "$<$<COMPILE_LANGUAGE:C>:-fstack-protector>"
-        )
-      endif()
-    endif()
-  endif()
-endif()
-
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-  check_cxx_compiler_flag("-fstack-protector-all" CXX_HAS_STACK_PROTECT_ALL)
-  if(CXX_HAS_STACK_PROTECT_ALL)
-    target_compile_options(cunit_compile_dependency INTERFACE 
-      "$<$<COMPILE_LANGUAGE:CXX>:-fstack-protector-all>"
-    )
-  else()
-    check_cxx_compiler_flag("-fstack-protector-strong" CXX_HAS_STACK_PROTECT_STRONG)
-    if(CXX_HAS_STACK_PROTECT_STRONG)
-      target_compile_options(cunit_compile_dependency INTERFACE 
-      "$<$<COMPILE_LANGUAGE:CXX>:-fstack-protector-strong>"
-      )
-    else()
-      check_cxx_compiler_flag("-fstack-protector" CXX_HAS_STACK_PROTECT)
-      if(CXX_HAS_STACK_PROTECT)
-        target_compile_options(cunit_compile_dependency INTERFACE 
-        "$<$<COMPILE_LANGUAGE:CXX>:-fstack-protector>"
-        )
-      endif()
-    endif()
   endif()
 endif()
 

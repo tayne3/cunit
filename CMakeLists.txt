@@ -9,28 +9,23 @@ include(${CMAKE_CURRENT_LIST_DIR}/cmake/ProjectIsTopLevel.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/OptionVariables.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/ProjectConfig.cmake)
 
-if(CUNIT_BUILD_SHARED)
-  add_library(cunit_shared SHARED)
-  set(CUNIT cunit_shared)
-  message(STATUS "cunit v${CUNIT_VERSION} shared library")
-else()
-  add_library(cunit_static STATIC)
-  set(CUNIT cunit_static)
-  message(STATUS "cunit v${CUNIT_VERSION} static library")
+set(CUNIT_LIB_TYPE STATIC)
+if(BUILD_SHARED_LIBS)
+  set(CUNIT_LIB_TYPE SHARED)
 endif()
-add_library(cunit::cunit ALIAS ${CUNIT})
+message(STATUS "cunit v${CUNIT_VERSION} ${CUNIT_LIB_TYPE} library")
 
-target_sources(${CUNIT} PRIVATE
+add_library(cunit ${CUNIT_LIB_TYPE})
+add_library(cunit::cunit ALIAS cunit)
+target_link_libraries(cunit PRIVATE cunit_compile_dependency)
+target_include_directories(cunit PUBLIC 
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+target_sources(cunit PRIVATE
   src/compare.c
   src/init.c
   src/suite.c
-)
-target_link_libraries(${CUNIT} PRIVATE 
-  cunit_compile_dependency
-)
-target_include_directories(${CUNIT} PUBLIC 
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
 )
 
 if(CUNIT_BUILD_EXAMPLE)
