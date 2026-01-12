@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/PreventInSourceBuilds.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/GitVersion.cmake)
-git_version_info(VERSION CUNIT_VERSION DEFAULT_VERSION 0.2.4)
+git_version_info(VERSION CUNIT_VERSION DEFAULT_VERSION 0.2.5)
 project(cunit VERSION ${CUNIT_VERSION})
 
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/ProjectIsTopLevel.cmake)

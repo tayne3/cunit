@@ -107,7 +107,7 @@ include(FetchContent)
 FetchContent_Declare(
     cunit
     GIT_REPOSITORY https://github.com/tayne3/cunit.git
-    GIT_TAG v0.2.3
+    GIT_TAG v0.2.5
 )
 FetchContent_MakeAvailable(cunit)
 
@@ -124,7 +124,7 @@ add_test(NAME my_tests COMMAND my_tests)
 
 ```cmake
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:tayne3/cunit@v0.2.3")
+CPMAddPackage("gh:tayne3/cunit@v0.2.5")
 
 add_executable(my_tests test_main.c)
 target_link_libraries(my_tests PRIVATE cunit::cunit)
@@ -144,30 +144,30 @@ make
 
 ### 核心函数
 
-| 函数 | 描述 |
-|------|------|
-| `cunit_init()` | 初始化框架 |
-| `cunit_cleanup()` | 清理资源 |
-| `cunit_suite(name, setup, teardown)` | 创建测试套件 |
-| `cunit_test(name, func)` | 向当前套件添加测试 |
-| `cunit_run()` | 运行所有测试 |
-| `cunit_run_suite(name)` | 运行指定套件 |
+| 函数                                 | 描述               |
+| ------------------------------------ | ------------------ |
+| `cunit_init()`                       | 初始化框架         |
+| `cunit_cleanup()`                    | 清理资源           |
+| `cunit_suite(name, setup, teardown)` | 创建测试套件       |
+| `cunit_test(name, func)`             | 向当前套件添加测试 |
+| `cunit_run()`                        | 运行所有测试       |
+| `cunit_run_suite(name)`              | 运行指定套件       |
 
 ### 结构化 API（推荐）
 
-| 宏 | 描述 |
-|----|------|
-| `CUNIT_SUITE_BEGIN(name, setup, teardown)` | 开始套件定义 |
-| `CUNIT_TEST(name, func)` | 向当前套件添加测试 |
-| `CUNIT_SUITE_END()` | 结束套件定义 |
+| 宏                                         | 描述               |
+| ------------------------------------------ | ------------------ |
+| `CUNIT_SUITE_BEGIN(name, setup, teardown)` | 开始套件定义       |
+| `CUNIT_TEST(name, func)`                   | 向当前套件添加测试 |
+| `CUNIT_SUITE_END()`                        | 结束套件定义       |
 
 ### 查询函数
 
-| 函数 | 描述 |
-|------|------|
-| `cunit_test_count()` | 获取测试总数 |
+| 函数                    | 描述           |
+| ----------------------- | -------------- |
+| `cunit_test_count()`    | 获取测试总数   |
 | `cunit_failure_count()` | 获取失败测试数 |
-| `cunit_suite_count()` | 获取测试套件数 |
+| `cunit_suite_count()`   | 获取测试套件数 |
 
 ### 断言宏
 

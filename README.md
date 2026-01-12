@@ -107,7 +107,7 @@ include(FetchContent)
 FetchContent_Declare(
     cunit
     GIT_REPOSITORY https://github.com/tayne3/cunit.git
-    GIT_TAG v0.2.3
+    GIT_TAG v0.2.5
 )
 FetchContent_MakeAvailable(cunit)
 
@@ -124,7 +124,7 @@ add_test(NAME my_tests COMMAND my_tests)
 
 ```cmake
 include(cmake/CPM.cmake)
-CPMAddPackage("gh:tayne3/cunit@v0.2.3")
+CPMAddPackage("gh:tayne3/cunit@v0.2.5")
 
 add_executable(my_tests test_main.c)
 target_link_libraries(my_tests PRIVATE cunit::cunit)
@@ -144,30 +144,30 @@ make
 
 ### Core Functions
 
-| Function | Description |
-|----------|-------------|
-| `cunit_init()` | Initialize the framework |
-| `cunit_cleanup()` | Clean up resources |
-| `cunit_suite(name, setup, teardown)` | Create a test suite |
-| `cunit_test(name, func)` | Add a test to current suite |
-| `cunit_run()` | Run all tests |
-| `cunit_run_suite(name)` | Run specific suite |
+| Function                             | Description                 |
+| ------------------------------------ | --------------------------- |
+| `cunit_init()`                       | Initialize the framework    |
+| `cunit_cleanup()`                    | Clean up resources          |
+| `cunit_suite(name, setup, teardown)` | Create a test suite         |
+| `cunit_test(name, func)`             | Add a test to current suite |
+| `cunit_run()`                        | Run all tests               |
+| `cunit_run_suite(name)`              | Run specific suite          |
 
 ### Structured API (Recommended)
 
-| Macro | Description |
-|-------|-------------|
-| `CUNIT_SUITE_BEGIN(name, setup, teardown)` | Begin suite definition |
-| `CUNIT_TEST(name, func)` | Add test to current suite |
-| `CUNIT_SUITE_END()` | End suite definition |
+| Macro                                      | Description               |
+| ------------------------------------------ | ------------------------- |
+| `CUNIT_SUITE_BEGIN(name, setup, teardown)` | Begin suite definition    |
+| `CUNIT_TEST(name, func)`                   | Add test to current suite |
+| `CUNIT_SUITE_END()`                        | End suite definition      |
 
 ### Query Functions
 
-| Function | Description |
-|----------|-------------|
-| `cunit_test_count()` | Get total number of tests |
+| Function                | Description                |
+| ----------------------- | -------------------------- |
+| `cunit_test_count()`    | Get total number of tests  |
 | `cunit_failure_count()` | Get number of failed tests |
-| `cunit_suite_count()` | Get number of test suites |
+| `cunit_suite_count()`   | Get number of test suites  |
 
 ### Assertion Macros
 
@@ -179,7 +179,7 @@ assert_false(condition);
 assert_bool(expected, actual);
 ```
 
-#### Integer Assertions  
+#### Integer Assertions
 
 ```c
 assert_int_eq(expected, actual);
