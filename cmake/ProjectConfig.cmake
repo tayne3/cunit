@@ -32,6 +32,13 @@ if(UNIX)
   target_link_libraries(cunit_compile_dependency INTERFACE pthread)
 endif()
 
+if(WIN32)
+  target_compile_definitions(cunit_compile_dependency INTERFACE
+    _WIN32_WINNT=0x0600              # Minimum Windows version (Vista)
+    WIN32_LEAN_AND_MEAN              # Exclude rarely-used Windows headers
+  )
+endif()
+
 # set source charset to utf-8 for MSVC
 if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
   target_compile_options(cunit_compile_dependency INTERFACE 
@@ -39,8 +46,9 @@ if(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 	)
 endif()
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-  target_compile_options(cunit_compile_dependency INTERFACE 
+  target_compile_options(cunit_compile_dependency INTERFACE
 		"$<$<COMPILE_LANGUAGE:CXX>:/utf-8>"
+		"$<$<COMPILE_LANGUAGE:CXX>:/Zc:__cplusplus>"
 	)
 endif()
 
