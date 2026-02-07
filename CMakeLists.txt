@@ -1,12 +1,18 @@
 cmake_minimum_required(VERSION 3.14)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/PreventInSourceBuilds.cmake)
+# In-source build guard
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
+  message(
+    FATAL_ERROR
+    "In-source builds are not supported. "
+    "You may need to delete 'CMakeCache.txt' and 'CMakeFiles/' before rebuilding this project."
+  )
+endif()
+
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/GitVersion.cmake)
-git_version_info(VERSION CUNIT_VERSION DEFAULT_VERSION 0.2.5)
+git_version_info(VERSION CUNIT_VERSION DEFAULT_VERSION 0.2.6)
 project(cunit VERSION ${CUNIT_VERSION})
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/ProjectIsTopLevel.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/OptionVariables.cmake)
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/ProjectConfig.cmake)
 
 set(CUNIT_LIB_TYPE STATIC)

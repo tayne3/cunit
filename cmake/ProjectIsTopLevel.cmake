@@ -1,4 +1,0 @@
-# This variable is set by project() in CMake 3.21+
-if(NOT DEFINED PROJECT_IS_TOP_LEVEL)
-  string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}" PROJECT_IS_TOP_LEVEL)
-endif()
